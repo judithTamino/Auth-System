@@ -1,9 +1,7 @@
-import CustomError from "./custom.error.js";
+import {CustomError} from "./custom.error.js";
 
-class DatabaseError extends CustomError {
+export class DatabaseError extends CustomError {
   constructor(message = "Database Error.") {
     super(message, 500);
   }
 }
-
-export default DatabaseError;

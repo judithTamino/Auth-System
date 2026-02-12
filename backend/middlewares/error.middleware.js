@@ -1,7 +1,9 @@
 import Joi from "joi";
 import { ENV } from "../config/env.js";
+import logger from "../config/logger.js";
+import { CustomError } from "../errors/index.js";
 
-const errorHandler = (error, _req, res, _next) => {
+export const errorHandler = (error, _req, res, _next) => {
   const isDev = ENV === "dev";
 
   let statusCode = error.statusCode || 500;
@@ -55,7 +57,17 @@ const errorHandler = (error, _req, res, _next) => {
   // Include stack trace only in development for debugging
   if (isDev) errorResponse.stack = error.stack;
 
+  if (statusCode >= 500)
+    logger.error("Server Error: ", errorResponse);
+  else logger.warn("Client Error: ", errorResponse);
+
   res.status(statusCode).json(errorResponse);
+};
+
+export const notFoundHandler = (req, res, next) => {
+  const error = new CustomError(`Route ${req.originalUrl} not found`, 404);
+  logger.warn(`404 - Route not found: ${req.method} ${req.originalUrl}`);
+  next(error);
 };
 
 export default errorHandler;

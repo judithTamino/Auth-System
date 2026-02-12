@@ -12,6 +12,6 @@ export const httpLogger = morgan(morganFormat, { stream });
 export const errorLogger = morgan(morganFormat, {
   skip: (_req, res) => res.statusCode < 400,
   stream: {
-    write: msg => logger.error(msg.trim());
+    write: msg => logger.error(msg.trim())
   }
 });
