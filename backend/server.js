@@ -6,6 +6,8 @@ import connectToDB from "./config/db.config.js";
 
 import authRouter from "./routes/auth.route.js";
 
+import errorHandler from "./middlewares/error.middleware.js";
+
 const app = express();
 const port = PORT || 8080;
 
@@ -13,6 +15,9 @@ app.use(express.json());
 
 // Routes
 app.use("/api/auth", authRouter);
+
+// Error Middleware
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(chalk.bgGreenBright(`Server is running on http://localhost:${port}`));
